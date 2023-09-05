@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  base_url: 'https://ybknwpi5s4.execute-api.us-east-1.amazonaws.com/dev'
+  base_url: 'mongodb://mongo:5vBZBTGRbcIrhb7Y9Qip@containers-us-west-85.railway.app:5938'
 };
