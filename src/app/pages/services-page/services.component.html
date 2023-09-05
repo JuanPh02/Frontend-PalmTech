@@ -1,0 +1,204 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-success">
+            <div class="row">
+              <div class="col-6">
+                <h4 class="card-title">Servicios</h4>
+              </div>
+              <div class="col-6">
+                <button mat-raised-button type="button" class="btn btn-secondary pull-right" data-toggle="modal"
+                  data-target="#createServiceModal">Nuevo
+                  Servicio</button>
+              </div>
+            </div>
+
+            <!-- <p class="card-category"> Here is a subtitle for this table</p> -->
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead class="text-primary">
+                  <th>
+                    #
+                  </th>
+                  <th>
+                    IMEI
+                  </th>
+                  <th>
+                    Marca
+                  </th>
+                  <th>
+                    Modelo
+                  </th>
+                  <th>
+                    Daño
+                  </th>
+                  <th>
+                    Cliente
+                  </th>
+                  <th>
+                    Acciones
+                  </th>
+                </thead>
+                <tbody>
+
+                  <tr *ngFor="let service of services; let i = index">
+                    <td>
+                      {{i + 1}}
+                    </td>
+                    <td>
+                      {{service.imei}}
+                    </td>
+                    <td>
+                      {{service.brand}}
+                    </td>
+                    <td>
+                      {{service.model}}
+                    </td>
+                    <td>
+                      {{service.damage}}
+                    </td>
+                    <td>
+                      {{service.customerName}}
+                    </td>
+                    <td class="td-actions">
+                      <button mat-raised-button type="button" [routerLink]="['/service-details']"
+                        [queryParams]="{ service: service.serviceID }" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                        <i class="material-icons">visibility</i>
+                      </button>
+                      <button mat-raised-button type="button" (click)="deleteService(service.serviceID)"
+                        class="btn btn-danger btn-link btn-sm btn-just-icon">
+                        <i class="material-icons">close</i>
+                      </button>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ------------------------- Modal Crear Servicio ------------------------- -->
+<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createServiceModal">
+  Crear Usuario
+</button> -->
+
+<!-- The modal -->
+<div #createServiceModal class="modal modal-angular fade" id="createServiceModal" tabindex="-1"
+  aria-labelledby="createServiceModalLabel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createServiceModalLabel">Crear Servicio</h5>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <form [formGroup]="serviceForm">
+          <div class="mb-3">
+            <select class="custom-select" formControlName="category" id="category" required>
+              <option value="" selected>Seleccione la categoria de servicio</option>
+              <option value="Reemplazo">Reemplazo de piezas</option>
+              <option value="Microelectronica">Microelectrónica</option>
+              <option value="Remanufactura">Remanufactura</option>
+            </select>
+            <div
+              *ngIf="serviceForm.get('category').invalid && (serviceForm.get('category').dirty || serviceForm.get('category').touched)">
+              <div class="text-danger" *ngIf="serviceForm.get('category').hasError('required')">La categoria es
+                obligatoria.</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="brand" class="form-label">Marca</label>
+            <input type="text" class="form-control" formControlName="brand" id="brand" required>
+            <div
+              *ngIf="serviceForm.get('brand').invalid && (serviceForm.get('brand').dirty || serviceForm.get('brand').touched)">
+              <div class="text-danger" *ngIf="serviceForm.get('brand').hasError('required')">La marca es
+                obligatoria.</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="model" class="form-label">Modelo</label>
+            <input type="text" class="form-control" formControlName="model" id="model" required>
+            <div
+              *ngIf="serviceForm.get('model').invalid && (serviceForm.get('model').dirty || serviceForm.get('model').touched)">
+              <div class="text-danger" *ngIf="serviceForm.get('model').hasError('required')">El modelo es
+                obligatorio.</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="imei" class="form-label">IMEI</label>
+            <input type="imei" class="form-control" formControlName="imei" id="imei" required>
+            <div
+              *ngIf="serviceForm.get('imei').invalid && (serviceForm.get('imei').dirty || serviceForm.get('imei').touched)">
+              <div class="text-danger" *ngIf="serviceForm.get('imei').hasError('required')">El IMEI es obligatorio.</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="damage" class="form-label">Daño</label>
+            <input type="damage" class="form-control" formControlName="damage" id="damage" required>
+            <div
+              *ngIf="serviceForm.get('damage').invalid && (serviceForm.get('damage').dirty || serviceForm.get('damage').touched)">
+              <div class="text-danger" *ngIf="serviceForm.get('damage').hasError('required')">El daño es obligatorio.</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Descripción</label>
+            <input type="description" class="form-control" formControlName="description" id="description" required>
+            <div
+              *ngIf="serviceForm.get('description').invalid && (serviceForm.get('description').dirty || serviceForm.get('description').touched)">
+              <div class="text-danger" *ngIf="serviceForm.get('description').hasError('required')">La descripción es obligatoria.</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="price" class="form-label">Precio</label>
+            <input type="price" class="form-control" formControlName="price" id="price" required>
+            <div
+              *ngIf="serviceForm.get('price').invalid && (serviceForm.get('price').dirty || serviceForm.get('price').touched)">
+              <div class="text-danger" *ngIf="serviceForm.get('price').hasError('required')">La descripción es obligatoria.</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="customerName" class="form-label">Nombre del Cliente</label>
+            <input type="customerName" class="form-control" formControlName="customerName" id="customerName" required>
+            <div
+              *ngIf="serviceForm.get('customerName').invalid && (serviceForm.get('customerName').dirty || serviceForm.get('customerName').touched)">
+              <div class="text-danger" *ngIf="serviceForm.get('customerName').hasError('required')">El nombre del cliente es obligatorio.</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="customerPhoneNumber" class="form-label">Teléfono del Cliente</label>
+            <input type="tel" class="form-control" formControlName="customerPhoneNumber" id="customerPhoneNumber">
+            <div
+              *ngIf="serviceForm.get('customerPhoneNumber').invalid && (serviceForm.get('customerPhoneNumber').dirty || serviceForm.get('customerPhoneNumber').touched)">
+              <div class="text-danger" *ngIf="serviceForm.get('customerPhoneNumber').hasError('required')">El teléfono del cliente es obligatorio.
+              </div>
+              <div class="text-danger" *ngIf="serviceForm.get('customerPhoneNumber').hasError('minlength')">El teléfono debe tener al
+                menos 10 dígitos.</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="customerEmail" class="form-label">Email del Cliente</label>
+            <input type="customerEmail" class="form-control" formControlName="customerEmail" id="customerEmail" required>
+            <div
+              *ngIf="serviceForm.get('customerEmail').invalid && (serviceForm.get('customerEmail').dirty || serviceForm.get('customerEmail').touched)">
+              <div class="text-danger" *ngIf="serviceForm.get('customerEmail').hasError('required')">El email del cliente es obligatorio.</div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary" (click)="createService()">Crear</button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,145 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-primary">
+                        <div class="row">
+                            <div class="col-6">
+                                <h4 class="card-title ">Usuarios</h4>
+                            </div>
+                            <div class="col-6">
+                                <button mat-raised-button type="button" class="btn btn-secondary pull-right"
+                                    data-toggle="modal" data-target="#createUserModal">Nuevo
+                                    Usuario</button>
+                            </div>
+                        </div>
+
+                        <!-- <p class="card-category"> Here is a subtitle for this table</p> -->
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class=" text-primary">
+                                    <th>
+                                        #
+                                    </th>
+                                    <th>
+                                        Documento
+                                    </th>
+                                    <th>
+                                        Nombre de Usuario
+                                    </th>
+                                    <th>
+                                        Email
+                                    </th>
+                                    <th>
+                                        Celular
+                                    </th>
+                                    <th>
+                                        Acciones
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    
+                                    <tr *ngFor="let user of users; let i = index">
+                                        <td>
+                                            {{i + 1}}
+                                        </td>
+                                        <td>
+                                            {{user.documentType}}{{user.documentID}}
+                                        </td>
+                                        <td>
+                                            {{user.username}}
+                                        </td>
+                                        <td>
+                                            {{user.email}}
+                                        </td>
+                                        <td class="text-primary">
+                                            {{user.phone}}
+                                        </td>
+                                        <td class="td-actions">
+                                            <button mat-raised-button type="button" [routerLink]="['/user-details']" [queryParams]="{ email: user.email }" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                                <i class="material-icons">visibility</i>
+                                            </button>
+                                            <button mat-raised-button type="button" (click)="deleteUser(user.email)" class="btn btn-danger btn-link btn-sm btn-just-icon">
+                                                <i class="material-icons">close</i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                   
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- ------------------------- Modal Crear Usuario ------------------------- -->
+<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createUserModal">
+    Crear Usuario
+</button> -->
+
+<!-- The modal -->
+<div #createUserModal class="modal modal-angular fade" id="createUserModal" tabindex="-1" aria-labelledby="createUserModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createUserModalLabel">Crear Usuario</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form [formGroup]="userForm">
+                    <div class="mb-3">
+                        <!-- <label for="documentType" class="form-label">Tipo de Documento</label> -->
+                        <select class="custom-select" formControlName="documentType" id="documentType" required>
+                            <option value="" selected>Seleccione tipo de documento</option>
+                            <option value="CC">Cédula</option>
+                            <option value="NIT">NIT</option>
+                        </select>
+                        <div *ngIf="userForm.get('documentType').invalid && (userForm.get('documentType').dirty || userForm.get('documentType').touched)">
+                            <div class="text-danger" *ngIf="userForm.get('documentType').hasError('required')">El tipo de documento es obligatorio.</div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="documentNumber" class="form-label">Número de Documento</label>
+                        <input type="text" class="form-control" formControlName="documentID" id="documentID" required>
+                        <div *ngIf="userForm.get('documentID').invalid && (userForm.get('documentID').dirty || userForm.get('documentID').touched)">
+                            <div class="text-danger" *ngIf="userForm.get('documentID').hasError('required')">El número de documento es obligatorio.</div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Nombre de Usuario</label>
+                        <input type="text" class="form-control" formControlName="username" id="username" required>
+                        <div *ngIf="userForm.get('username').invalid && (userForm.get('username').dirty || userForm.get('username').touched)">
+                            <div class="text-danger" *ngIf="userForm.get('username').hasError('required')">El nombre de usuario es obligatorio.</div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" formControlName="email" id="email" required>
+                        <div *ngIf="userForm.get('email').invalid && (userForm.get('email').dirty || userForm.get('email').touched)">
+                            <div class="text-danger" *ngIf="userForm.get('email').hasError('required')">El email es obligatorio.</div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Teléfono</label>
+                        <input type="tel" class="form-control" formControlName="phone" id="phone">
+                        <div *ngIf="userForm.get('phone').invalid && (userForm.get('phone').dirty || userForm.get('phone').touched)">
+                            <div class="text-danger" *ngIf="userForm.get('phone').hasError('required')">El teléfono es obligatorio.</div>
+                            <div class="text-danger" *ngIf="userForm.get('phone').hasError('minlength')">El teléfono debe tener al menos 10 dígitos.</div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" (click)="createUser()">Crear</button>
+                  </form>
+
+            </div>
+        </div>
+    </div>
+</div>

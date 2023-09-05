@@ -1,0 +1,182 @@
+<div class="main-content">
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="card">
+                  <div class="card-header card-header-success">
+                      <div class="row">
+                          <div class="col-6">
+                              <h4 class="card-title ">Técnicos</h4>
+                          </div>
+                          <div class="col-6">
+                              <button mat-raised-button type="button" class="btn btn-secondary pull-right"
+                                  data-toggle="modal" data-target="#createTechnicianModal">Nuevo
+                                  Técnico</button>
+                          </div>
+                      </div>
+
+                      <!-- <p class="card-category"> Here is a subtitle for this table</p> -->
+                  </div>
+                  <div class="card-body">
+                      <div class="table-responsive">
+                          <table class="table">
+                              <thead class=" text-primary">
+                                  <th>
+                                      #
+                                  </th>
+                                  <th>
+                                      Documento
+                                  </th>
+                                  <th>
+                                      Nombre
+                                  </th>
+                                  <th>
+                                      Apellidos
+                                  </th>
+                                  <th>
+                                      Sector
+                                  </th>
+                                  <th>
+                                      Email
+                                  </th>
+                                  <th>
+                                      Celular
+                                  </th>
+                                  <th>
+                                      Acciones
+                                  </th>
+                              </thead>
+                              <tbody>
+                                  
+                                  <tr *ngFor="let technician of technicians; let i = index">
+                                      <td>
+                                          {{i + 1}}
+                                      </td>
+                                      <td>
+                                          {{technician.documentID}}
+                                      </td>
+                                      <td>
+                                          {{technician.name}}
+                                      </td>
+                                      <td>
+                                          {{technician.lastname}}
+                                      </td>
+                                      <td>
+                                          {{technician.sector}}
+                                      </td>
+                                      <td>
+                                          {{technician.email}}
+                                      </td>
+                                      <td class="text-primary">
+                                          {{technician.phone}}
+                                      </td>
+                                      <td class="td-actions">
+                                          <button mat-raised-button type="button" [routerLink]="['/technician-details']" [queryParams]="{ technicianID: technician.technicianID }" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                              <i class="material-icons">visibility</i>
+                                          </button>
+                                          <button mat-raised-button type="button" (click)="deleteTechnician(technician.technicianID)" class="btn btn-danger btn-link btn-sm btn-just-icon">
+                                              <i class="material-icons">close</i>
+                                          </button>
+                                      </td>
+                                  </tr>
+                                 
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+  </div>
+</div>
+
+
+<!-- ------------------------- Modal Crear Tecnico ------------------------- -->
+<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createTechnicianModal">
+  Crear Tecnico
+</button> -->
+
+<!-- The modal -->
+<div #createTechnicianModal class="modal modal-angular fade" id="createTechnicianModal" tabindex="-1" aria-labelledby="createTechnicianModalLabel">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="createTechnicianModalLabel">Crear Técnico</h5>
+              <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+
+              <form [formGroup]="technicianForm">
+                  
+                  <div class="mb-3">
+                      <label for="documentNumber" class="form-label">Número de Documento</label>
+                      <input type="number" class="form-control" formControlName="documentID" id="documentID" required>
+                      <div *ngIf="technicianForm.get('documentID').invalid && (technicianForm.get('documentID').dirty || technicianForm.get('documentID').touched)">
+                          <div class="text-danger" *ngIf="technicianForm.get('documentID').hasError('required')">El número de documento es obligatorio.</div>
+                      </div>
+                  </div>
+                  <div class="mb-3">
+                      <label for="name" class="form-label">Nombre</label>
+                      <input type="text" class="form-control" formControlName="name" id="name" required>
+                      <div *ngIf="technicianForm.get('name').invalid && (technicianForm.get('name').dirty || technicianForm.get('name').touched)">
+                          <div class="text-danger" *ngIf="technicianForm.get('name').hasError('required')">El nombre es obligatorio.</div>
+                      </div>
+                  </div>
+                  <div class="mb-3">
+                      <label for="lastname" class="form-label">Apellidos</label>
+                      <input type="text" class="form-control" formControlName="lastname" id="lastname" required>
+                      <div *ngIf="technicianForm.get('lastname').invalid && (technicianForm.get('lastname').dirty || technicianForm.get('lastname').touched)">
+                          <div class="text-danger" *ngIf="technicianForm.get('lastname').hasError('required')">El apellido es obligatorio.</div>
+                      </div>
+                  </div>
+                  <div class="mb-3">
+                    <select class="custom-select" formControlName="sector" id="sector" required>
+                      <option value="" selected>Seleccione el Sector</option>
+                      <option value="Reemplazo">Reemplazo de piezas</option>
+                      <option value="Microelectronica">Microelectrónica</option>
+                      <option value="Remanufactura">Remanufactura</option>
+                    </select>
+                    <div
+                      *ngIf="technicianForm.get('sector').invalid && (technicianForm.get('sector').dirty || technicianForm.get('sector').touched)">
+                      <div class="text-danger" *ngIf="technicianForm.get('sector').hasError('required')">El sector es
+                        obligatorio.</div>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                      <label for="birthday" class="form-label">Fecha de Nacimiento</label>
+                      <input type="date" class="form-control" formControlName="birthday" id="birthday" required>
+                      <div *ngIf="technicianForm.get('birthday').invalid && (technicianForm.get('birthday').dirty || technicianForm.get('birthday').touched)">
+                          <div class="text-danger" *ngIf="technicianForm.get('birthday').hasError('required')">La fecha de nacimiento es obligatoria.</div>
+                      </div>
+                  </div>
+                  <div class="mb-3">
+                      <label for="address" class="form-label">Dirección</label>
+                      <input type="text" class="form-control" formControlName="address" id="address" required>
+                      <div *ngIf="technicianForm.get('address').invalid && (technicianForm.get('address').dirty || technicianForm.get('address').touched)">
+                          <div class="text-danger" *ngIf="technicianForm.get('address').hasError('required')">La dirección es obligatoria.</div>
+                      </div>
+                  </div>
+                  <div class="mb-3">
+                      <label for="email" class="form-label">Email</label>
+                      <input type="email"  class="form-control" formControlName="email" id="email" required>
+                      <div *ngIf="technicianForm.get('email').invalid && (technicianForm.get('email').dirty || technicianForm.get('email').touched)">
+                          <div class="text-danger" *ngIf="technicianForm.get('email').hasError('required')">El email es obligatorio.</div>
+                      </div>
+                  </div>
+                  <div class="mb-3">
+                      <label for="phone" class="form-label">Teléfono</label>
+                      <input type="tel" class="form-control" formControlName="phone" id="phone">
+                      <div *ngIf="technicianForm.get('phone').invalid && (technicianForm.get('phone').dirty || technicianForm.get('phone').touched)">
+                          <div class="text-danger" *ngIf="technicianForm.get('phone').hasError('required')">El teléfono es obligatorio.</div>
+                          <div class="text-danger" *ngIf="technicianForm.get('phone').hasError('minlength')">El teléfono debe tener al menos 10 dígitos.</div>
+                      </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary" (click)="createTechnician()">Crear</button>
+                </form>
+
+          </div>
+      </div>
+  </div>
+</div>
