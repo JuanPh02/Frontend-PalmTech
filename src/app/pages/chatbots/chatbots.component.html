@@ -1,0 +1,68 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-primary">
+                        <h4 class="card-title">Chatbots</h4>
+                        <!-- <p class="card-category"> Here is a subtitle for this table</p> -->
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class=" text-primary">
+                                    <th>
+                                        #
+                                    </th>
+                                    <th>
+                                        Nombre
+                                    </th>
+                                    <th>
+                                        Usuario
+                                    </th>
+                                    <th>
+                                        Bucket
+                                    </th>
+                                    <th>
+                                        Activo
+                                    </th>
+                                    <th>
+                                        Acciones
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let chatbot of chatbots; let idx = index">
+                                        <td>
+                                            {{idx + 1}}
+                                        </td>
+                                        <td>
+                                            {{chatbot.name}}
+                                        </td>
+                                        <td>
+                                            {{chatbot.userEmail}}
+                                        </td>
+                                        <td>
+                                            <a [href]="chatbot.bucket" target="_blank" rel="noopener noreferrer">{{chatbot.bucket}}</a>
+                                        </td>
+                                        <td class="text-primary" [ngClass]="{'text-success': chatbot.active, 'text-danger': !chatbot.active}">
+                                            {{chatbot.active ? 'Activo' : 'Inactivo'}}
+                                        </td>
+                                        <td class="td-actions">
+                                            <button mat-raised-button type="button" [routerLink]="['/chatbot-details']" [queryParams]="{ botID: chatbot.email }" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                                <i class="material-icons">visibility</i>
+                                            </button>
+                                            <button mat-raised-button type="button" (click)="deleteUser(user.email)" class="btn btn-danger btn-link btn-sm btn-just-icon">
+                                                <i class="material-icons">close</i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

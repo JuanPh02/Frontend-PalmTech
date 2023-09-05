@@ -4,6 +4,8 @@ import { Technician } from 'app/models/technician.model';
 import { TechniciansService } from 'app/services/technicians.service';
 import Swal from 'sweetalert2';
 
+declare var jQuery: any;
+
 @Component({
   selector: 'app-technicians',
   templateUrl: './technicians.component.html',
@@ -13,52 +15,7 @@ export class TechniciansComponent implements OnInit {
 
   @ViewChild('createTechnicianModal') createTechnicianModal: ElementRef;
 
-  technicians: Technician[] = [
-    {
-      technicianID: '10',
-      documentID: '1001012532',
-      name: 'Stiwar',
-      lastname: 'Salazar',
-      sector: 'Microelectrónica',
-      birthday: '28/04/1998',
-      address: 'Calle 30 #20 - 12',
-      email: 'ssalazar@gmail.com',
-      phone: '+573123458909'
-    },
-    {
-      technicianID: '10',
-      documentID: '1001012532',
-      name: 'Stiwar',
-      lastname: 'Salazar',
-      sector: 'Microelectrónica',
-      birthday: '28/04/1998',
-      address: 'Calle 30 #20 - 12',
-      email: 'ssalazar@gmail.com',
-      phone: '+573123458909'
-    },
-    {
-      technicianID: '10',
-      documentID: '1001012532',
-      name: 'Stiwar',
-      lastname: 'Salazar',
-      sector: 'Microelectrónica',
-      birthday: '28/04/1998',
-      address: 'Calle 30 #20 - 12',
-      email: 'ssalazar@gmail.com',
-      phone: '+573123458909'
-    },
-    {
-      technicianID: '10',
-      documentID: '1001012532',
-      name: 'Stiwar',
-      lastname: 'Salazar',
-      sector: 'Microelectrónica',
-      birthday: '28/04/1998',
-      address: 'Calle 30 #20 - 12',
-      email: 'ssalazar@gmail.com',
-      phone: '+573123458909'
-    },
-  ];
+  technicians: Technician[] = [];
 
   technicianForm = new FormGroup({
     documentID: new FormControl('', Validators.required),
@@ -80,13 +37,15 @@ export class TechniciansComponent implements OnInit {
 
   createTechnician() {
     let technicianValues = this.technicianForm.value;
+    technicianValues.documentID = technicianValues.documentID.toString();
     this.technicianForm.markAllAsTouched();
     
     if (this.technicianForm.valid) {
       console.log(technicianValues);
       this.techniciansService.createTechnician(technicianValues).subscribe(resp => {
         console.log(resp);
-        this.createTechnicianModal.nativeElement.style.display = 'none';
+        jQuery(this.createTechnicianModal?.nativeElement).modal('hide');
+        this.getTechnicians();
         this.technicianForm.reset();
       });
     } 
@@ -95,8 +54,8 @@ export class TechniciansComponent implements OnInit {
 
   getTechnicians() {
     this.techniciansService.getTechnicians().subscribe(resp => {
-      this.technicians = resp;
       console.log(resp);
+      this.technicians = resp;
     })
   }
 
